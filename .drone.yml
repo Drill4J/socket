@@ -1,0 +1,27 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: build
+    image: node:8
+    commands:
+      - yarn
+      - yarn test
+      - yarn typecheck
+      - yarn lint
+
+  - name: publish
+    image: plugins/npm
+    settings:
+      username:
+        from_secret: drill_username
+      password:
+        from_secret: drill_password
+      email:
+        from_secret: drill_email
+    when:
+      branch:
+        - master
+      event:
+        exclude:
+          - pull_request
