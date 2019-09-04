@@ -10,13 +10,8 @@ export interface DrillResponse {
 export class DrillSocket {
   public connection$: WebSocketSubject<DrillResponse>;
   public subscription: Subscription;
-  constructor(socket: string = 'drill-admin-socket') {
-    // @ts-ignore
-    this.connection$ = new webSocket<DrillResponse>(
-      process.env.REACT_APP_ENV
-        ? `wss://${window.location.host}/ws/${socket}`
-        : `wss://localhost:8443/ws/${socket}`,
-    );
+  constructor(url: string) {
+    this.connection$ = webSocket<DrillResponse>(url);
 
     this.subscription = this.connection$.subscribe();
   }
