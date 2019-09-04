@@ -9,6 +9,7 @@ steps:
       - yarn test
       - yarn typecheck
       - yarn lint
+      - yarn build
 
   - name: publish
     image: plugins/npm
