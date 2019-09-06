@@ -13,7 +13,11 @@ export class DrillSocket {
   constructor(url: string) {
     this.connection$ = webSocket<DrillResponse>(url);
 
-    this.subscription = this.connection$.subscribe();
+    this.subscription = this.connection$.subscribe(({ type }: DrillResponse) => {
+      if (type === 'UNAUTHORIZED') {
+        this.handleUnauthorized();
+      }
+    });
   }
 
   public subscribe(topic: string, callback: (arg: any) => void, message?: object) {
@@ -27,6 +31,22 @@ export class DrillSocket {
       subscription.unsubscribe();
       this.send(topic, 'UNSUBSCRIBE');
     };
+  }
+
+  public reconnect(url: string) {
+    this.connection$ = webSocket<DrillResponse>(url);
+
+    this.subscription = this.connection$.subscribe(({ type }: DrillResponse) => {
+      if (type === 'UNAUTHORIZED') {
+        this.handleUnauthorized();
+      }
+    });
+  }
+
+  private handleUnauthorized() {
+    if (window.location.pathname !== '/login') {
+      window.location.href = '/login';
+    }
   }
 
   public send(destination: string, type: string, message?: object) {

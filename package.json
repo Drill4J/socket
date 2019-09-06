@@ -1,6 +1,6 @@
 {
   "name": "@drill4j/socket",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "Drill4J",
   "description": "Rx WebSocket wrapper. Used for communication between Front-end and Back-end.",
   "main": "dist/index.js",
