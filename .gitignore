@@ -65,3 +65,6 @@ typings/
 
 #builded lib
 dist/
+
+# cache
+.DS_Store

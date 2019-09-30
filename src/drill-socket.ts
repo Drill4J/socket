@@ -23,7 +23,7 @@ export class DrillSocket {
   public subscribe(topic: string, callback: (arg: any) => void, message?: object) {
     const subscription = this.connection$.subscribe(
       ({ destination, message: responseMessage }: DrillResponse) =>
-        destination === topic && callback(responseMessage ? JSON.parse(responseMessage) : null),
+        destination === topic && callback(responseMessage || null),
     );
     this.send(topic, 'SUBSCRIBE', message);
 
