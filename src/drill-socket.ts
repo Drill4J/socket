@@ -29,7 +29,7 @@ export class DrillSocket {
 
     return () => {
       subscription.unsubscribe();
-      this.send(topic, 'UNSUBSCRIBE');
+      this.send(topic, 'UNSUBSCRIBE', message);
     };
   }
 
