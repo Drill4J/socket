@@ -3,7 +3,7 @@ name: default
 
 steps:
   - name: build
-    image: node:8
+    image: node:12
     commands:
       - yarn
       - yarn test
