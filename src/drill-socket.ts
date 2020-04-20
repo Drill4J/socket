@@ -29,14 +29,6 @@ export class DrillSocket {
   public subscribe(topic: string, callback: (arg: any) => void, message?: object) {
     const subscription = this.connection$.subscribe(
       ({ destination, message: responseMessage, to }: DrillResponse) => {
-        const {
-          agentId: subscriptionAgentId,
-          buildVersion: subscriptionBuildVersion,
-        } = message as SubscriptionMessage;
-        const {
-          agentId: messageAgentId,
-          buildVersion: messageBuildVersion,
-        } = to as SubscriptionMessage;
         if (destination !== topic) {
           return;
         }
@@ -45,6 +37,14 @@ export class DrillSocket {
           callback(responseMessage || null);
         }
 
+        const {
+          agentId: subscriptionAgentId,
+          buildVersion: subscriptionBuildVersion,
+        } = message as SubscriptionMessage;
+        const {
+          agentId: messageAgentId,
+          buildVersion: messageBuildVersion,
+        } = to as SubscriptionMessage;
         if (
           subscriptionAgentId === messageAgentId &&
           subscriptionBuildVersion === messageBuildVersion
