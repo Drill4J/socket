@@ -35,6 +35,7 @@ export class DrillSocket {
 
         if (!to && !message) {
           callback(responseMessage || null);
+          return;
         }
 
         const {
