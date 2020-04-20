@@ -5,6 +5,12 @@ export interface DrillResponse {
   message: string;
   destination: string;
   type: string;
+  to?: { agentId?: string; groupId?: string; buildVersion?: string };
+}
+
+export interface SubscriptionMessage {
+  agentId: string;
+  buildVersion: string;
 }
 
 export class DrillSocket {
@@ -22,8 +28,30 @@ export class DrillSocket {
 
   public subscribe(topic: string, callback: (arg: any) => void, message?: object) {
     const subscription = this.connection$.subscribe(
-      ({ destination, message: responseMessage }: DrillResponse) =>
-        destination === topic && callback(responseMessage || null),
+      ({ destination, message: responseMessage, to }: DrillResponse) => {
+        const {
+          agentId: subscriptionAgentId,
+          buildVersion: subscriptionBuildVersion,
+        } = message as SubscriptionMessage;
+        const {
+          agentId: messageAgentId,
+          buildVersion: messageBuildVersion,
+        } = to as SubscriptionMessage;
+        if (destination !== topic) {
+          return;
+        }
+
+        if (!to && !message) {
+          callback(responseMessage || null);
+        }
+
+        if (
+          subscriptionAgentId === messageAgentId &&
+          subscriptionBuildVersion === messageBuildVersion
+        ) {
+          callback(responseMessage || null);
+        }
+      },
     );
     this.send(topic, 'SUBSCRIBE', message);
 
