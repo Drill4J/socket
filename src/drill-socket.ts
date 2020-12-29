@@ -72,7 +72,7 @@ export class DrillSocket {
   }
 
   public reconnect(url: string) {
-    this.connection$ = webSocket<DrillResponse>(url);
+    this.connection$ = webSocket<DrillResponse>({ url, closeObserver: { next: this.onCloseEvent } });
 
     this.subscription = this.connection$.subscribe(({ type }: DrillResponse) => {
       if (type === 'UNAUTHORIZED') {
