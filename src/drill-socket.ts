@@ -16,8 +16,17 @@ export interface SubscriptionMessage {
 export class DrillSocket {
   public connection$: WebSocketSubject<DrillResponse>;
   public subscription: Subscription;
-  constructor(url: string) {
-    this.connection$ = webSocket<DrillResponse>(url);
+  public onCloseEvent: (value: CloseEvent) => void = () => { };
+
+  constructor(url: string, onClose?: (value: CloseEvent) => void) {
+    if (onClose) {
+      this.onCloseEvent = onClose;
+    }
+    this.connection$ = webSocket<DrillResponse>({
+      url, closeObserver: {
+        next: this.onCloseEvent,
+      }
+    });
 
     this.subscription = this.connection$.subscribe(({ type }: DrillResponse) => {
       if (type === 'UNAUTHORIZED') {
