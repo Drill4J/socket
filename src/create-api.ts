@@ -13,5 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { DrillResponse, DrillSocket } from './drill-socket';
-export { createApi } from './create-api';
+import { DrillSocket } from './drill-socket';
+import { TOKEN_KEY } from './token-key';
+
+export const getSocketUrl = (socket: string) => {
+  const token = localStorage.getItem(TOKEN_KEY);
+
+  return `${window.location.href.startsWith('https') ? 'wss' : 'ws'}://${
+    process.env.REACT_APP_API_HOST || window.location.host
+  }/ws/${socket}?token=${token}`;
+};
+
+export const createApi = (apiPath: string) => new DrillSocket(getSocketUrl(apiPath));

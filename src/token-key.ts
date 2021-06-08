@@ -13,5 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { DrillResponse, DrillSocket } from './drill-socket';
-export { createApi } from './create-api';
+export const TOKEN_KEY = 'auth_token';

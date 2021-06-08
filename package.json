@@ -1,6 +1,6 @@
 {
   "name": "@drill4j/socket",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "author": "Drill4J",
   "description": "Rx WebSocket wrapper. Used for communication between Front-end and Back-end.",
   "main": "dist/index.js",
@@ -19,6 +19,7 @@
     "rxjs": "6.5.2"
   },
   "dependencies": {
+    "@types/node": "^15.12.2",
     "rxjs": "6.5.5",
     "typescript": "3.8.3"
   },
